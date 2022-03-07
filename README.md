@@ -1,2 +1,2 @@
 # ModDropPlusPlus
-Official PyTorch Implementation of ModDrop++
+Official PyTorch Implementation of ModDrop++ (coming soon)
