@@ -2,7 +2,7 @@
 [![](https://img.shields.io/badge/License-BSD%203--Clause-orange.svg)](https://github.com/han-liu/ModDropPlusPlus/blob/main/LICENSE)
 
 
-# ModDrop++: Training A Better Self-adaptive Model for Missing Modalities
+# ModDrop++: A Self-adaptive Model for Missing Modalities
 
 The repository is the official PyTorch implementation of the paper " 
 ModDrop++: A Dynamic Filter Network with Intra-subject Co-training for Multiple Sclerosis Lesion Segmentation with Missing Modalities". 
