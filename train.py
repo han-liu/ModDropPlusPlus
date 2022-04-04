@@ -60,7 +60,7 @@ if __name__ == '__main__':
     val_indices = [x for x in range(opt.n_fold) if x != test_index] if opt.test_mode != 'test' else [test_index]
 
     models = []
-    data_generator = DataGeneratorAll()
+    data_generator = DataGenerator()
     for val_index in val_indices:  # for each fold in cross-validation
         data_generator.build_dataset(val_index, test_index, opt.test_mode)  # build dataset 2D for training, 3D for testing
         dataset, dataset_size = create_data_loader(opt)
