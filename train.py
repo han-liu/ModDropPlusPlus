@@ -62,7 +62,7 @@ if __name__ == '__main__':
     models = []
     data_generator = DataGenerator()
     for val_index in val_indices:  # for each fold in cross-validation
-        data_generator.build_dataset(val_index, test_index, opt.test_mode)  # build dataset 2D for training, 3D for testing
+        # data_generator.build_dataset(val_index, test_index, opt.test_mode)  # uncomment for online data generation
         dataset, dataset_size = create_data_loader(opt)
         dataset_val, dataset_size_val = create_data_loader(opt_val)
         dataset_test, dataset_size_test = create_data_loader(opt_test)

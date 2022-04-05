@@ -1,6 +1,3 @@
-#================================================== ModDrop++ ==========================================================
-
-
 import torch
 import pytorch_ssim
 import random
@@ -13,7 +10,7 @@ from . import networks
 from configurations import *
 
 
-class MsModel(BaseModel):
+class MsModel(BaseModel): # ModDrop++ model
     def name(self):
         return 'MsModel'
 
@@ -22,8 +19,8 @@ class MsModel(BaseModel):
         if is_train:
             parser.add_argument('--lambda_L2', type=int, default=2000, help='weight for L2 loss') 
             parser.add_argument('--lambda_dice', type=int, default=100, help='weight for dice loss')
-            parser.add_argument('--lambda_SSIM', type=int, default=200, help='weight for SSIM loss')
-            parser.add_argument('--lambda_KL', type=int, default=100, help='weight for KL loss')
+            parser.add_argument('--lambda_SSIM', type=int, default=200, help='weight for SSIM loss (feature space)')
+            parser.add_argument('--lambda_KL', type=int, default=100, help='weight for KL loss (feature space)')
             parser.add_argument('--lambda_focal', type=int, default=10000, help='weight for focal loss')
         return parser
 
@@ -33,11 +30,17 @@ class MsModel(BaseModel):
         self.use_dyn = opt.use_dyn
         self.model_names = ['G']
         self.netG = networks.define_G(opt.input_nc * len(MODALITIES), opt.init_type, opt.init_gain, self.gpu_ids, dyn=self.use_dyn)  # Network input 3 slices x 5 modalities
-        self.visual_names = ['real_mask', 'full_mask', 'miss_mask']
-        for modality in MODALITIES:
-            self.visual_names += ['full_' + modality]
-            self.visual_names += ['miss_' + modality]
-
+        
+        if self.isTrain:
+            self.visual_names = ['real_mask', 'full_mask', 'miss_mask']
+            for modality in MODALITIES:
+                self.visual_names += ['full_' + modality]
+                self.visual_names += ['miss_' + modality]
+        else:
+            self.visual_names = ['real_mask', 'fake_mask']
+            for modality in MODALITIES:
+                self.visual_names += [modality]
+                
         if self.isTrain:
             self.loss_names = ['total']
             self.criterion_names = []
@@ -63,23 +66,32 @@ class MsModel(BaseModel):
             self.optimizers = [torch.optim.Adam(params_to_update, lr=opt.lr, betas=(opt.beta1, 0.999))]
 
     def set_input(self, input):
-        data_full, data_miss = input
-        self.full_dc = data_full['dc'].to(self.device)
-        self.full_mc = data_full['mc'].to(self.device)
-        self.miss_dc = data_miss['dc'].to(self.device)
-        self.miss_mc = data_miss['mc'].to(self.device)
-        self.real_mask = data_full['mask'].to(self.device)
-
-        for modality in MODALITIES:
-            setattr(self, 'full_' + modality, data_full[modality].to(self.device))
-            setattr(self, 'miss_' + modality, data_miss[modality].to(self.device))
-
-        self.full_input = torch.cat([getattr(self, 'full_' + k) for k in MODALITIES], 1)
-        self.miss_input = torch.cat([getattr(self, 'miss_' + k) for k in MODALITIES], 1)
+        if self.isTrain:  # training phase
+            data_full, data_miss = input
+            self.full_dc = data_full['dc'].to(self.device)
+            self.full_mc = data_full['mc'].to(self.device)
+            self.miss_dc = data_miss['dc'].to(self.device)
+            self.miss_mc = data_miss['mc'].to(self.device)
+            self.real_mask = data_full['mask'].to(self.device)
+            for modality in MODALITIES:
+                setattr(self, 'full_' + modality, data_full[modality].to(self.device))
+                setattr(self, 'miss_' + modality, data_miss[modality].to(self.device))
+            self.full_input = torch.cat([getattr(self, 'full_' + k) for k in MODALITIES], 1)
+            self.miss_input = torch.cat([getattr(self, 'miss_' + k) for k in MODALITIES], 1)
+        else:  # inference phase
+            self.mc = input['mc'].to(self.device)
+            for modality in MODALITIES:
+                setattr(self, modality, input[modality].to(self.device))
+            self.real_mask = input['mask'].to(self.device)
+            self.input = torch.cat([getattr(self, k) for k in MODALITIES], 1)
 
     def forward(self):
-        self.full_feat, self.full_mask = self.netG(self.full_input, self.full_mc, get_dyn_feat=True)
-        self.miss_feat, self.miss_mask = self.netG(self.miss_input, self.miss_mc, get_dyn_feat=True)
+        if self.isTrain:
+            self.full_feat, self.full_mask = self.netG(self.full_input, self.full_mc, get_dyn_feat=True)
+            self.miss_feat, self.miss_mask = self.netG(self.miss_input, self.miss_mc, get_dyn_feat=True)
+        else:
+            self.fake_mask = self.netG(self.input, self.mc)  # inference phase
+
 
     def backward_G(self):
         def normalize(feat):

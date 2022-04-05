@@ -1,7 +1,7 @@
 import torch
 from torch.nn import init
 from torch.optim import lr_scheduler
-from models.tiramisu_model_dyn import FCDenseNetHan
+from models.tiramisu_model_dyn import FCDenseNetDyn
 from models.tiramisu_model import FCDenseNet
 
 ###############################################################################
@@ -63,22 +63,20 @@ def init_net(net, init_type='normal', init_gain=0.02, gpu_ids=[]):
 def define_G(input_nc, init_type='normal', init_gain=0.02, gpu_ids=[], dyn=False, DG=False):
 
     if dyn and not DG:
-        print('=== Using dynamic filter network (no DG) === !!!')
-        net = FCDenseNetHan(in_channels=input_nc, down_blocks=(4, 4, 4, 4, 4), up_blocks=(4, 4, 4, 4, 4),
+        print('\n************************************************')
+        print('***** MS Lesion Segmentation via ModDrop++ *****')
+        print('************************************************\n')
+        net = FCDenseNetDyn(in_channels=input_nc, down_blocks=(4, 4, 4, 4, 4), up_blocks=(4, 4, 4, 4, 4),
                             bottleneck_layers=4, growth_rate=12, out_chans_first_conv=48, n_classes=1)
     
     if not dyn and not DG:
-        print('=== Using regular network (no DG) === !!!')
+        print('\n*****************************************************')
+        print('***** MS Lesion Segmentation via Static Network *****')
+        print('*****************************************************\n')
         net = FCDenseNet(in_channels=input_nc, down_blocks=(4, 4, 4, 4, 4), up_blocks=(4, 4, 4, 4, 4),
                          bottleneck_layers=4, growth_rate=12, out_chans_first_conv=48, n_classes=1)
     
-    if dyn and DG:
-        print('=== Using dynamic network (DG) === !!!')
-        net = FCDenseNetHanDG(in_channels=input_nc, down_blocks=(4, 4, 4, 4, 4), up_blocks=(4, 4, 4, 4, 4),
-                         bottleneck_layers=4, growth_rate=12, out_chans_first_conv=48, n_classes=1)
+    if DG:
+        print('=== Code for Domain Generalization coming soon === !!!')
 
-    if not dyn and DG:
-        print('=== Using regular network (DG) === !!!')
-        net = FCDenseNetDG(in_channels=input_nc, down_blocks=(4, 4, 4, 4, 4), up_blocks=(4, 4, 4, 4, 4),
-                         bottleneck_layers=4, growth_rate=12, out_chans_first_conv=48, n_classes=1)        
     return init_net(net, init_type, init_gain, gpu_ids)

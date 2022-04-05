@@ -2,7 +2,7 @@ import os
 
 # TODO: change the following path based on your dataset
 # should be one of the "ISBI", "MICCAI16_1", "MICCAI16_2", "MICCAI16_3", "UMCL"
-PATH_DATASET = '/gpfs23/scratch/liuh26/LesionSegPrivate/ms_data'
+PATH_DATASET = '/gpfs23/scratch/liuh26/ModDropPlusPlus-main/ms_data'
 DATASETS = ["UMCL"]  # training domains
 
 # We assume the format of file names in this pattern {PREFIX}_{PATIENT-ID}_{TIMEPOINT-ID}_{MODALITY(MASK)}.{SUFFIX}
