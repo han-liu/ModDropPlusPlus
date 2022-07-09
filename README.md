@@ -16,7 +16,7 @@ If you use this code, please cite our work, the reference is
 ```
 @article{liu2022moddrop++,
   title={ModDrop++: A Dynamic Filter Network with Intra-subject Co-training for Multiple Sclerosis Lesion Segmentation with Missing Modalities},
-  author={Liu, Han and Fan, Yubo and Li, Hao and Wang, Jiacheng and Hu, Dewei and Cui, Can and Lee, Ho Hin and Oguz, Ipek},
+  author={Liu, Han and Fan, Yubo and Li, Hao and Wang, Jiacheng and Hu, Dewei and Cui, Can and Lee, Ho Hin and Zhang, Huahong and Oguz, Ipek},
   journal={arXiv preprint arXiv:2203.04959},
   year={2022}
 }
