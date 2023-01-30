@@ -12,7 +12,7 @@ Modality Dropout (ModDrop) has been widely used as an effective training scheme 
 
 The trained models for UMCL and ISBI datasets are available at: https://drive.google.com/drive/folders/1_g-OdFeCPtzYRL9UjH8gTami1uGqU7D4?usp=sharing
 
-If you use this code, please cite our work, the reference is
+If you find our code/paper helpful for your research, please consider citing our work:
 ```
 @article{liu2022moddrop++,
   title={ModDrop++: A Dynamic Filter Network with Intra-subject Co-training for Multiple Sclerosis Lesion Segmentation with Missing Modalities},
