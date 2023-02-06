@@ -2,7 +2,7 @@
 [![](https://img.shields.io/badge/License-BSD%203--Clause-orange.svg)](https://github.com/han-liu/ModDropPlusPlus/blob/main/LICENSE)
 
 
-# ModDrop++: A Self-adaptive Model for Missing Modalities
+# ModDrop++
 
 The repository is the official PyTorch implementation of the paper " 
 ModDrop++: A Dynamic Filter Network with Intra-subject Co-training for Multiple Sclerosis Lesion Segmentation with Missing Modalities". [[paper]](https://arxiv.org/pdf/2203.04959.pdf)
@@ -13,11 +13,13 @@ The trained models for UMCL and ISBI datasets are available [here](https://drive
 
 If you find our code/paper helpful for your research, please consider citing our work:
 ```
-@article{liu2022moddrop++,
+@inproceedings{liu2022moddrop++,
   title={ModDrop++: A Dynamic Filter Network with Intra-subject Co-training for Multiple Sclerosis Lesion Segmentation with Missing Modalities},
   author={Liu, Han and Fan, Yubo and Li, Hao and Wang, Jiacheng and Hu, Dewei and Cui, Can and Lee, Ho Hin and Zhang, Huahong and Oguz, Ipek},
-  journal={arXiv preprint arXiv:2203.04959},
-  year={2022}
+  booktitle={Medical Image Computing and Computer Assisted Intervention--MICCAI 2022: 25th International Conference, Singapore, September 18--22, 2022, Proceedings, Part V},
+  pages={444--453},
+  year={2022},
+  organization={Springer}
 }
 ```
 If you have any questions, feel free to contact han.liu@vanderbilt.edu or open an Issue in this repo. 
