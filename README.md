@@ -4,8 +4,7 @@
 
 # ModDrop++
 
-The repository is the official PyTorch implementation of the paper " 
-ModDrop++: A Dynamic Filter Network with Intra-subject Co-training for Multiple Sclerosis Lesion Segmentation with Missing Modalities". [[paper]](https://arxiv.org/pdf/2203.04959.pdf)
+The repository is the official PyTorch implementation of the paper "ModDrop++: A Dynamic Filter Network with Intra-subject Co-training for Multiple Sclerosis Lesion Segmentation with Missing Modalities". [[paper]](https://arxiv.org/pdf/2203.04959.pdf)
 
 Modality Dropout (ModDrop) has been widely used as an effective training scheme to train a unified model that can be self-adaptive to different missing conditions. However, the classic ModDrop suffers from two limitations: (1) regardless of different missing conditions, it always forces the network to learn a single set of parameters and thus may limit the expressiveness of the network and (2) ModDrop does not leverage the intra-subject relation between full- and missing-modality data. To address these two limitations, the proposed ModDrop++ incoportates (1) a plug-and-play dynamic head and (2) an intra-subject co-training strategy to upgrade the ModDrop. ModDrop++ has been developed and implemented based on the [2.5D Tiramisu model](https://github.com/MedICL-VU/LesionSeg), which achieved the state-of-the-art performance for MS lesion segmentation on the ISBI 2015 challenge.
 
